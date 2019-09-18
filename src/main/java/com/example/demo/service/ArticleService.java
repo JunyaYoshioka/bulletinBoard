@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.Article;
 import com.example.demo.domain.Comments;
 import com.example.demo.repository.ArticleRepositry;
+import com.example.demo.repository.CommentRepository;
 
 @Service
 public class ArticleService {
 	@Autowired
 	public ArticleRepositry articleRepositry;
 	
+	
+	@Autowired
+	public CommentRepository commentRepository;
 	
 	/**
 	 * 全部の記事を取得します
@@ -30,7 +34,7 @@ public class ArticleService {
 	 * @return　コメント
 	 */
 	public List<Comments> showCommentsList(Integer articleId) {
-		List<Comments> comments = articleRepositry.findByComment(articleId);
+		List<Comments> comments = commentRepository.findByComment(articleId);
 		return comments;
 	}
 	
@@ -46,31 +50,44 @@ public class ArticleService {
 	 * @param comments
 	 */
 	public void insert(Comments comments ) {
-		articleRepositry.insert(comments);
+		commentRepository.insert(comments);
+	}
+	
+	/**
+	 * 投稿を削除した時のコメント削除
+	 * @param articleId
+	 */
+	public void deleteArticle(Integer id) {
+		commentRepository.deleteByCommentsID(id);
 	}
 	
 	/**
 	 * 投稿削除
 	 * @param id
 	 */
-//	public void delete(Integer id) {
-//		articleRepositry.deleteByArticlesID(id);
-//	}
+	public void delete(Integer id) {
+		articleRepositry.deleteByArticlesID(id);
+	}
+	
+	
 	
 	/**
 	 * コメント削除
 	 * @param id
 	 */
 	public void deleteComments(Integer id) {
-		articleRepositry.deleteByCommentsID(id);
+		commentRepository.deleteByCommentsID(id);
+		
 	}
 	
 	/**
 	 * 投稿とコメントの削除
 	 * @param id
 	 */
-	public void deleteByAll(Integer id) {
-		articleRepositry.deleteByCommentIdAndArticlesID(id);
-	}
+//	public void deleteByAll(Integer id) {
+//		articleRepositry.deleteByArticlesID(id);
+//		commentRepository.deleteByCommentsID(id);
+//		
+//	}
 	
 }
