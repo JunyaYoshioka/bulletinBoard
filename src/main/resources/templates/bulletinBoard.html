@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>掲示板サイト</title>
+<link rel="stylesheet" href="../../static/css/bulletinBoard.css" th:href="@{/css/bulletinBoard.css}">
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header>
+ヘッダー
+</header>
+
+<!-- 左側 -->
+<div class="left">左</div>
+
+<!-- --------------メイン-------------- -->
+<div class="main">
+<h1>掲示板</h1><br>
+
+
+
+<!-- 投稿 -->
+
+<form method="post" th:action="@{/ArticleController/insert}" th:object="${articleForm}">
+    		<div style="color: red" th:errors="*{name}">
+				 名前を入力してください
+			</div>
+			
+	<label>投稿者名:</label>
+	<input style="text" th:field="*{name}" name="name" id="name"><br>
+			<div style="color: red" th:errors="*{content}">
+			 	投稿内容を入力してください
+			</div>
+			
+	<label>投稿内容:</label>
+	<textarea style="text" th:field="*{content}" name="content" id="content"></textarea>
+	<button type="submit">記事投稿</button>
+</form>
+
+
+<hr>
+
+<!-- 投稿記事 -->
+<div th:each="article  :${articleList}" th:object="${article}">
+	<div class="articlePost">
+		<span>投稿ID:</span><span th:text="${article.id}">投稿ID</span><br>
+			
+		<span>投稿者名:</span><span th:text="${article.name}">投稿者名</span><br>
+			
+		<span>投稿内容:</span><span th:text="${article.content}">投稿内容</span>
+		<form th:action="@{/ArticleController/delete}">
+		<button>記事削除</button>
+		<input type="hidden" name="id" th:value="${article.id}" >
+		</form>
+	
+</div>
+<!-- コメント記事 -->
+	<div class="commentArticle" th:each="comment :${article.commentlist}" >
+	
+		<span>コメントID:</span><span th:text="${comment.id}">コメントID</span><br>
+			
+		<span>コメント者名:</span><span th:text= "${comment.name}">コメント者名</span><br>
+		
+		<span>コメント内容:</span><span th:text="${comment.content}">コメント内容</span>
+		<form th:action="@{/ArticleController/deleteComment}" method="post">
+		<button>記事削除</button>
+		<input type="hidden" name="id" th:value="${comment.id}" >
+		</form>
+		
+	</div>
+	
+
+<!-- コメント投稿 -->
+	<div class="commentPost">
+	<form th:action="@{/ArticleController/commentsInsert}" th:object="${commentsFrom}" method="post"> 
+	
+		<input type="hidden" th:value="${article.id}" name="articleId">
+		
+		
+		<div th:if="${article.id == commentsFrom.articleId}">
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages">エラー！</div>
+            </div>
+		
+									
+		<label>名前:</label><input style="text" name="name"><br>
+		
+		   <div th:if="${article.id == commentsFrom.articleId}">
+                <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error-messages">エラー！</div>
+            </div>
+		
+		
+		<label>コメント:</label><textarea style="text" name="content"></textarea>
+		<button>コメント投稿</button>
+		</form>
+	</div>
+	
+<hr>
+
+
+<br>
+<br>
+<br>
+<hr>
+</div>
+</div>
+
+
+<!-- 右側 -->
+<div class="rigth">右側</div>
+<!-- フッター -->
+<footer>ふったー</footer>
+
+
+</body>
+</html>
