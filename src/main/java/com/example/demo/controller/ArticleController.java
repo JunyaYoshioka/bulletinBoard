@@ -83,12 +83,18 @@ public class ArticleController {
 	 */
 	@RequestMapping("/delete")
 	public String delete(Integer id, Model model) {
+		articleService.deleteComment(id);
 		articleService.deleteArticle(id);
-		articleService.delete(id);
 		
 		return"redirect:/ArticleController";
 	}
 	
+	/**
+	 * コメント1件を削除
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/deleteComment")
 	public String deleteComment(Integer id, Model model) {
 		articleService.deleteComments(id);

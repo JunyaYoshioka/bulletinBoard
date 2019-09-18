@@ -31,10 +31,12 @@ public class ArticleService {
 	
 	
 	/**
+	 * コメントを表示
+	 * 
 	 * @return　コメント
 	 */
 	public List<Comments> showCommentsList(Integer articleId) {
-		List<Comments> comments = commentRepository.findByComment(articleId);
+		List<Comments> comments = commentRepository.findAllComment(articleId);
 		return comments;
 	}
 	
@@ -57,16 +59,16 @@ public class ArticleService {
 	 * 投稿を削除した時のコメント削除
 	 * @param articleId
 	 */
-	public void deleteArticle(Integer id) {
-		commentRepository.deleteByCommentsID(id);
+	public void deleteComment(Integer id) {
+		commentRepository.findByComments(id);
 	}
 	
 	/**
 	 * 投稿削除
 	 * @param id
 	 */
-	public void delete(Integer id) {
-		articleRepositry.deleteByArticlesID(id);
+	public void deleteArticle(Integer id) {
+		articleRepositry.deleteByArticles(id);
 	}
 	
 	
@@ -76,7 +78,7 @@ public class ArticleService {
 	 * @param id
 	 */
 	public void deleteComments(Integer id) {
-		commentRepository.deleteByCommentsID(id);
+		commentRepository.deleteByCommentsArticle(id);
 		
 	}
 	

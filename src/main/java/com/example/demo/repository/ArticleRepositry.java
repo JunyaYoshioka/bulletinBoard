@@ -72,7 +72,7 @@ public class ArticleRepositry {
 	 * 投稿削除
 	 * @param id
 	 */
-	public void deleteByArticlesID(Integer id) {
+	public void deleteByArticles(Integer id) {
 		String deleteSpl = "DELETE FROM articles WHERE id = :id;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(deleteSpl, param);

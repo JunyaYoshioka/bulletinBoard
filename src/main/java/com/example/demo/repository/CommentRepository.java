@@ -29,12 +29,13 @@ public class CommentRepository {
 		return comments;
 	};
 	
+	
 	/**
 	 * コメント一覧
-	 * 
-	 * @return コメント一覧
+	 * @param articleId
+	 * @return
 	 */
-	public List<Comments> findByComment(Integer articleId){
+	public List<Comments> findAllComment(Integer articleId){
 		String sql = "SELECT * FROM comments WHERE article_id = :articleId;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("articleId", articleId);
 		List<Comments> commentsList = template.query(sql, param, COMMENTS_ROW_MAPPER);
@@ -52,23 +53,23 @@ public class CommentRepository {
 	}
 	
 	/**
-	 * コメント削除
+	 * 投稿削除した時に一緒にコメント削除
 	 * @param id
 	 */
-	public void deleteByCommentsID(Integer id) {
+	public void findByComments(Integer id) {
 		String deleteSpl = "DELETE FROM comments WHERE article_id = :id;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(deleteSpl, param);
 	}
 	
-//	/**
-//	 * コメント削除
-//	 * @param articleId
-//	 */
-//	public void deleteByCommentsArticle(Integer id) {
-//		String deleteSpl = "DELETE FROM comments WHERE article_id = :articleId;";
-//		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
-//		template.update(deleteSpl, param);
-//	}
+	/**
+	 * コメント削除
+	 * @param articleId
+	 */
+	public void deleteByCommentsArticle(Integer id) {
+		String deleteSpl = "DELETE FROM comments WHERE id = :id;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		template.update(deleteSpl, param);
+	}
 	
 }
